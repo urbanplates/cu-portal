@@ -108,12 +108,27 @@ td {
   border-bottom: 1px solid #ddd;
   text-align: center;
 }
+
+/* BUTTON */
+.download-btn {
+  margin-top: 5px;
+  padding: 5px 8px;
+  font-size: 12px;
+  background: #0c3c60;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.download-btn:hover {
+  background: #1e5c85;
+}
 </style>
 </head>
 
 <body>
 
-<!-- TOPBAR -->
 <div class="topbar">
   <img src="images/logo.png">
   <h3>Chandigarh University</h3>
@@ -121,7 +136,6 @@ td {
 
 <div class="main">
 
-  <!-- SIDEBAR -->
   <div class="sidebar">
     <div class="profile">
       <img src="images/user.png">
@@ -135,13 +149,11 @@ td {
     </div>
   </div>
 
-  <!-- CONTENT -->
   <div class="content">
 
     <!-- SUMMARY -->
     <div class="card">
       <h3>Fees Summary</h3>
-
       <p>Paid: ₹<span id="paid"></span></p>
       <p>Pending: ₹<span id="pending"></span></p>
 
@@ -152,32 +164,23 @@ td {
       <h4 style="color:green;">✔ All Fees Cleared</h4>
     </div>
 
-<button onclick="downloadReceipt()" style="
-  margin-top:10px;
-  padding:10px 15px;
-  background:#0c3c60;
-  color:white;
-  border:none;
-  border-radius:5px;
-  cursor:pointer;
-">
-  ⬇ Download Receipt
-</button>
-    <!-- INSTALLMENTS -->
+    <!-- TABLE -->
     <div class="card">
       <h3>Installments</h3>
 
-      <table id="table">
-        <tr>
-          <th>No</th>
-          <th>Amount</th>
-          <th>Status</th>
-        </tr>
+      <table>
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Amount</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="table"></tbody>
       </table>
     </div>
 
   </div>
-
 </div>
 
 <script>
@@ -187,7 +190,6 @@ if(user){
   document.getElementById("name").innerText = user.name;
 }
 
-// installments data
 const installments = [
   { no: 1, amount: 5833, status: "Paid" },
   { no: 2, amount: 5833, status: "Paid" },
@@ -198,22 +200,18 @@ const installments = [
   { no: 7, amount: 7500, status: "Paid" }
 ];
 
-// totals
 let totalPaid = 0;
 installments.forEach(i => totalPaid += i.amount);
 
 let totalFees = 42498;
 let pending = totalFees - totalPaid;
 
-// UI update
 document.getElementById("paid").innerText = totalPaid;
 document.getElementById("pending").innerText = pending;
 
-// progress
 let percent = (totalPaid / totalFees) * 100;
 document.getElementById("bar").style.width = percent + "%";
 
-// table
 const table = document.getElementById("table");
 
 installments.forEach(i => {
@@ -224,16 +222,7 @@ installments.forEach(i => {
     <td style="color:green;font-weight:bold;">
       ${i.status}
       <br>
-      <button onclick="downloadReceipt(${i.no})" style="
-        margin-top:5px;
-        padding:5px 8px;
-        font-size:12px;
-        background:#0c3c60;
-        color:white;
-        border:none;
-        border-radius:4px;
-        cursor:pointer;
-      ">
+      <button class="download-btn" onclick="downloadReceipt(${i.no})">
         Download
       </button>
     </td>
@@ -241,9 +230,28 @@ installments.forEach(i => {
   `;
 });
 
-// function
 function downloadReceipt(no) {
-  alert("Server busy, try again later");
+
+  // simulate loading delay
+  const msg = document.createElement("div");
+  msg.innerText = "Processing request...";
+  msg.style.position = "fixed";
+  msg.style.top = "20px";
+  msg.style.right = "20px";
+  msg.style.background = "#0c3c60";
+  msg.style.color = "white";
+  msg.style.padding = "10px 15px";
+  msg.style.borderRadius = "5px";
+  msg.style.zIndex = "9999";
+
+  document.body.appendChild(msg);
+
+  setTimeout(() => {
+    msg.remove();
+
+    alert("❌ Server Error: Unable to download receipt. Please try again later.");
+
+  }, 1500);
 }
 </script>
 
