@@ -108,10 +108,9 @@ function downloadReceipt() {
 
 // ================= TEST =================
 app.get("/", (req, res) => {
-  res.send("Server running ✅");
+  res.sendFile(__dirname + "/login.html");
 });
-
 // ================= START =================
 app.listen(3000, () => {
-  console.log("Server running → http://localhost:3000 🚀");
+  console.log("Server running → https://cu-portal.onrender.com 🚀");
 });
