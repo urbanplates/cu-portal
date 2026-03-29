@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Fees</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #f4f6f9;
+}
+
+/* TOPBAR */
+.topbar {
+  background: #0c3c60;
+  color: white;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+}
+
+.topbar img {
+  height: 35px;
+  margin-right: 10px;
+}
+
+/* MAIN */
+.main {
+  display: flex;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 230px;
+  background: #123d5c;
+  color: white;
+  height: 100vh;
+  padding: 20px;
+}
+
+.profile {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.profile img {
+  width: 80px;
+  border-radius: 50%;
+}
+
+.menu a {
+  display: block;
+  padding: 10px;
+  margin: 5px 0;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.menu a:hover,
+.active {
+  background: #1e5c85;
+}
+
+/* CONTENT */
+.content {
+  flex: 1;
+  padding: 20px;
+}
+
+/* CARD */
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+/* PROGRESS BAR */
+.progress {
+  background: #ddd;
+  height: 12px;
+  border-radius: 6px;
+  margin-top: 10px;
+}
+
+.progress-bar {
+  height: 12px;
+  background: green;
+  width: 0%;
+  border-radius: 6px;
+}
+
+/* TABLE */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  background: #0c3c60;
+  color: white;
+  padding: 10px;
+}
+
+td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+</style>
+</head>
+
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <img src="images/logo.png">
+  <h3>Chandigarh University</h3>
+</div>
+
+<div class="main">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="profile">
+      <img src="images/user.png">
+      <h4 id="name">Student</h4>
+    </div>
+
+    <div class="menu">
+      <a href="dashboard.html">📊 Dashboard</a>
+      <a class="active">💰 Fees</a>
+      <a href="login.html">🚪 Logout</a>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- SUMMARY -->
+    <div class="card">
+      <h3>Fees Summary</h3>
+
+      <p>Paid: ₹<span id="paid"></span></p>
+      <p>Pending: ₹<span id="pending"></span></p>
+
+      <div class="progress">
+        <div id="bar" class="progress-bar"></div>
+      </div>
+
+      <h4 style="color:green;">✔ All Fees Cleared</h4>
+    </div>
+
+<button onclick="downloadReceipt()" style="
+  margin-top:10px;
+  padding:10px 15px;
+  background:#0c3c60;
+  color:white;
+  border:none;
+  border-radius:5px;
+  cursor:pointer;
+">
+  ⬇ Download Receipt
+</button>
+    <!-- INSTALLMENTS -->
+    <div class="card">
+      <h3>Installments</h3>
+
+      <table id="table">
+        <tr>
+          <th>No</th>
+          <th>Amount</th>
+          <th>Status</th>
+        </tr>
+      </table>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+const user = JSON.parse(localStorage.getItem("user"));
+
+if(user){
+  document.getElementById("name").innerText = user.name;
+}
+
+// installments data
+const installments = [
+  { no: 1, amount: 5833, status: "Paid" },
+  { no: 2, amount: 5833, status: "Paid" },
+  { no: 3, amount: 5833, status: "Paid" },
+  { no: 4, amount: 5833, status: "Paid" },
+  { no: 5, amount: 5833, status: "Paid" },
+  { no: 6, amount: 5833, status: "Paid" },
+  { no: 7, amount: 7500, status: "Paid" }
+];
+
+// totals
+let totalPaid = 0;
+installments.forEach(i => totalPaid += i.amount);
+
+let totalFees = 42498;
+let pending = totalFees - totalPaid;
+
+// UI update
+document.getElementById("paid").innerText = totalPaid;
+document.getElementById("pending").innerText = pending;
+
+// progress
+let percent = (totalPaid / totalFees) * 100;
+document.getElementById("bar").style.width = percent + "%";
+
+// table
+const table = document.getElementById("table");
+
+installments.forEach(i => {
+  table.innerHTML += `
+  <tr>
+    <td>${i.no}</td>
+    <td>₹${i.amount}</td>
+    <td style="color:green;font-weight:bold;">
+      ${i.status}
+      <br>
+      <button onclick="downloadReceipt(${i.no})" style="
+        margin-top:5px;
+        padding:5px 8px;
+        font-size:12px;
+        background:#0c3c60;
+        color:white;
+        border:none;
+        border-radius:4px;
+        cursor:pointer;
+      ">
+        Download
+      </button>
+    </td>
+  </tr>
+  `;
+});
+
+// function
+function downloadReceipt(no) {
+  alert("Server busy, try again later");
+}
+</script>
+
+</body>
+</html>

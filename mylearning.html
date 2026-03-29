@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>My Learning</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #f4f6f9;
+}
+
+/* TOPBAR */
+.topbar {
+  background: #0c3c60;
+  color: white;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+}
+
+.topbar img {
+  height: 35px;
+  margin-right: 10px;
+}
+
+/* MAIN */
+.main {
+  display: flex;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 230px;
+  background: #123d5c;
+  color: white;
+  height: 100vh;
+  padding: 20px;
+}
+
+.profile {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.profile img {
+  width: 80px;
+  border-radius: 50%;
+}
+
+.menu a {
+  display: block;
+  padding: 10px;
+  margin: 5px 0;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.menu a:hover,
+.active {
+  background: #1e5c85;
+}
+
+/* CONTENT */
+.content {
+  flex: 1;
+  padding: 20px;
+}
+
+/* CARDS */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.progress {
+  background: #ddd;
+  height: 18px;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+.progress-fill {
+  background: linear-gradient(to right, #ff9800, #ff5722);
+  height: 100%;
+  color: white;
+  font-size: 12px;
+  text-align: center;
+  line-height: 18px;
+  border-radius: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <img src="images/logo.png">
+  <h3>Chandigarh University</h3>
+</div>
+
+<div class="main">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+
+    <div class="profile">
+      <img src="images/user.png">
+      <h4 id="name">Student</h4>
+    </div>
+
+    <div class="menu">
+      <a href="dashboard.html">📊 Dashboard</a>
+      <a class="active">📚 My Learning</a>
+      <a href="exam.html">📝 Exam</a>
+      <a href="fees.html">💰 Fees</a>
+      <a href="login.html">🚪 Logout</a>
+    </div>
+
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <h2>My Learning</h2>
+
+    <div class="cards" id="cards"></div>
+
+  </div>
+
+</div>
+
+<script>
+const user = JSON.parse(localStorage.getItem("user"));
+
+if(user){
+  document.getElementById("name").innerText = user.name;
+}
+
+// fetch subjects
+fetch(`http://localhost:3000/dashboard/${user.username}`)
+.then(res => res.json())
+.then(data => {
+
+if(data.success){
+
+const container = document.getElementById("cards");
+
+data.subjects.forEach((sub, index) => {
+
+container.innerHTML += `
+<div class="card" onclick="openSubject('${sub.name}')">
+  <h3>${sub.name}</h3>
+
+  <div class="progress">
+    <div class="progress-fill" style="width:${sub.progress}%">
+      ${sub.progress}%
+    </div>
+  </div>
+
+</div>
+`;
+
+});
+
+}
+
+});
+
+// click function
+function openSubject(name){
+  window.location.href = "subject.html?name=" + encodeURIComponent(name);
+}
+</script>
+
+</body>
+</html>

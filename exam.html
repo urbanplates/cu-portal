@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Exam</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #f4f6f9;
+}
+
+/* TOPBAR */
+.topbar {
+  background: #0c3c60;
+  color: white;
+  padding: 12px 20px;
+}
+
+/* MAIN */
+.main {
+  display: flex;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 230px;
+  background: #123d5c;
+  color: white;
+  height: 100vh;
+  padding: 20px;
+}
+
+.menu a {
+  display: block;
+  padding: 10px;
+  color: white;
+  text-decoration: none;
+}
+
+.menu a:hover {
+  background: #1e5c85;
+}
+
+/* CONTENT */
+.content {
+  flex: 1;
+  padding: 20px;
+}
+
+/* CARD */
+.card {
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+/* BUTTON */
+button {
+  padding: 8px 12px;
+  background: #0c3c60;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+  <h2>Examinations</h2>
+</div>
+
+<div class="main">
+
+<div class="sidebar">
+  <div class="menu">
+    <a href="dashboard.html">📊 Dashboard</a>
+    <a href="mylearning.html">📚 My Learning</a>
+    <a style="background:#1e5c85;">📝 Exam</a>
+    <a href="fees.html">💰 Fees</a>
+  </div>
+</div>
+
+<div class="content">
+
+<h2>Available Exams</h2>
+
+<div id="subjects"></div>
+
+<div id="quizBox" style="display:none;"></div>
+
+</div>
+
+</div>
+
+<script>
+
+// SUBJECT LIST
+const subjects = [
+  "Financial Management",
+  "Marketing Management",
+  "HR Management",
+  "Operations",
+  "Research Methods",
+  "Banking"
+];
+
+const container = document.getElementById("subjects");
+
+// show subjects
+subjects.forEach(sub => {
+  container.innerHTML += `
+  <div class="card">
+    <h3>${sub}</h3>
+    <button onclick="startExam('${sub}')">Start Exam</button>
+  </div>
+  `;
+});
+
+// questions (same for demo)
+const questions = [
+  {
+    q: "What is management?",
+    options: ["Process","Object","Thing","None"],
+    ans: 0
+  },
+  {
+    q: "Marketing means?",
+    options: ["Selling","Buying","Planning","All"],
+    ans: 3
+  }
+];
+
+// start exam
+function startExam(subject){
+
+document.getElementById("subjects").style.display = "none";
+const quizBox = document.getElementById("quizBox");
+
+quizBox.style.display = "block";
+
+let html = `<h3>${subject} Exam</h3>`;
+
+questions.forEach((q,i)=>{
+  html += `
+  <div class="card">
+    <p>${i+1}. ${q.q}</p>
+    ${q.options.map((opt,j)=>
+      `<label>
+        <input type="radio" name="q${i}" value="${j}">
+        ${opt}
+      </label><br>`
+    ).join("")}
+  </div>
+  `;
+});
+
+html += `<button onclick="submitExam()">Submit</button>`;
+
+quizBox.innerHTML = html;
+
+}
+
+// submit exam
+function submitExam(){
+
+let score = 0;
+
+questions.forEach((q,i)=>{
+  let ans = document.querySelector(`input[name="q${i}"]:checked`);
+  if(ans && parseInt(ans.value) === q.ans){
+    score++;
+  }
+});
+
+alert("Your Score: " + score + "/" + questions.length);
+
+location.reload();
+
+}
+
+</script>
+
+</body>
+</html>

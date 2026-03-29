@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Subject</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #f4f6f9;
+}
+
+/* TOPBAR */
+.topbar {
+  background: #0c3c60;
+  color: white;
+  padding: 12px 20px;
+}
+
+/* CONTENT */
+.content {
+  padding: 20px;
+}
+
+/* VIDEO */
+.video-box {
+  background: black;
+  height: 300px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* CARD */
+.card {
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+button {
+  background: #0c3c60;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.done {
+  background: green !important;
+}
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+  <h2 id="subjectName">Subject</h2>
+</div>
+
+<div class="content">
+
+  <!-- VIDEO -->
+  <div class="video-box">
+    <iframe id="videoPlayer" width="100%" height="100%"
+      src=""
+      frameborder="0"
+      allowfullscreen>
+    </iframe>
+  </div>
+
+  <h3>Course Modules</h3>
+  <div id="modules"></div>
+
+</div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const subject = params.get("name");
+
+document.getElementById("subjectName").innerText = subject;
+
+// 🔥 REAL MODULE DATA
+const modules = [
+  {
+    title: "Introduction",
+    video: "https://www.youtube.com/embed/3fumBcKC6RE",
+    notes: "notes1.pdf"
+  },
+  {
+    title: "Basics",
+    video: "https://www.youtube.com/embed/tgbNymZ7vqY",
+    notes: "notes2.pdf"
+  },
+  {
+    title: "Advanced Concepts",
+    video: "https://www.youtube.com/embed/kJQP7kiw5Fk",
+    notes: "notes3.pdf"
+  },
+  {
+    title: "Case Studies",
+    video: "https://www.youtube.com/embed/ysz5S6PUM-U",
+    notes: "notes4.pdf"
+  },
+  {
+    title: "Revision",
+    video: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    notes: "notes5.pdf"
+  }
+];
+
+// load saved progress
+let progress = JSON.parse(localStorage.getItem(subject)) || {};
+
+const container = document.getElementById("modules");
+
+// render modules
+modules.forEach((m, i) => {
+
+  let doneClass = progress[i] ? "done" : "";
+
+  container.innerHTML += `
+  <div class="card">
+    <h4>${i+1}. ${m.title}</h4>
+
+    <button onclick="playVideo('${m.video}')">▶ Watch</button>
+    <button onclick="downloadNotes('${m.notes}')">📄 Notes</button>
+    <button class="${doneClass}" onclick="markDone(${i})">✔ Done</button>
+  </div>
+  `;
+});
+
+// functions
+function playVideo(link){
+  document.getElementById("videoPlayer").src = link;
+}
+
+function downloadNotes(file){
+  alert("Downloading " + file);
+}
+
+// mark complete
+function markDone(index){
+  progress[index] = true;
+  localStorage.setItem(subject, JSON.stringify(progress));
+  location.reload();
+}
+</script>
+
+</body>
+</html>

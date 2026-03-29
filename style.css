@@ -1,0 +1,146 @@
+body {
+  margin: 0;
+  font-family: Arial;
+}
+
+/* BACKGROUND */
+.login-body {
+  background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+              url('https://images.unsplash.com/photo-1523240795612-9a054b0db644');
+  background-size: cover;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* MAIN BOX */
+.login-container {
+  display: flex;
+  width: 700px;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* LEFT SIDE */
+.login-left {
+  width: 50%;
+  background: #f5f5f5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-left img {
+  width: 200px;
+}
+
+/* RIGHT SIDE */
+.login-right {
+  width: 50%;
+  padding: 40px;
+  text-align: center;
+}
+
+.login-right h2 {
+  margin-bottom: 20px;
+}
+
+/* INPUTS */
+.login-right input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+/* BUTTON */
+.login-right button {
+  width: 100%;
+  padding: 12px;
+  background: #c62828; /* 🔴 RED */
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.login-right button:hover {
+  background: #a61d1d;
+}
+
+/* LAYOUT */
+.main {
+  display: flex;
+  font-family: Arial;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 220px;
+  background: #0b3d4f;
+  color: white;
+  height: 100vh;
+  padding: 20px;
+}
+
+.sidebar a {
+  display: block;
+  color: white;
+  text-decoration: none;
+  margin: 10px 0;
+}
+
+.sidebar a:hover {
+  background: #c62828;
+  padding: 5px;
+}
+
+/* PROFILE */
+.profile {
+  text-align: center;
+}
+
+.profile img {
+  width: 80px;
+  border-radius: 50%;
+}
+
+/* CONTENT */
+.content {
+  flex: 1;
+  padding: 20px;
+}
+
+/* TOP BAR */
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo {
+  width: 60px;
+}
+
+/* CARDS */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.card {
+  background: #0b3d4f;
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+/* GRAPH */
+.graph-box {
+  margin-top: 30px;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+}

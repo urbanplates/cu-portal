@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dashboard</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #f4f6f9;
+}
+
+/* TOPBAR */
+.topbar {
+  background: #0c3c60;
+  color: white;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+}
+
+.topbar img {
+  height: 35px;
+  margin-right: 10px;
+}
+
+/* MAIN */
+.main {
+  display: flex;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 230px;
+  background: #123d5c;
+  color: white;
+  height: 100vh;
+  padding: 20px;
+}
+
+.profile {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.profile img {
+  width: 80px;
+  border-radius: 50%;
+}
+
+.menu a {
+  display: block;
+  padding: 10px;
+  margin: 5px 0;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.menu a:hover,
+.active {
+  background: #1e5c85;
+}
+
+/* CONTENT */
+.content {
+  flex: 1;
+  padding: 20px;
+}
+
+/* SUBJECT CARDS */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.card {
+  background: #0c3c60;
+  color: white;
+  padding: 15px;
+  border-radius: 8px;
+  position: relative;
+}
+
+.card small {
+  opacity: 0.8;
+}
+
+.percent {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  background: #ff9800;
+  padding: 5px 10px;
+  border-radius: 5px 0 8px 0;
+  font-weight: bold;
+}
+
+/* GRAPH */
+.graph {
+  background: white;
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- TOP -->
+<div class="topbar">
+  <img src="images/logo.png">
+  <h3>Chandigarh University</h3>
+</div>
+
+<div class="main">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+
+    <div class="profile">
+      <img src="images/user.png">
+      <h4 id="name">Student</h4>
+    </div>
+
+    <div class="menu">
+      <a class="active">📊 Dashboard</a>
+      <a href="mylearning.html">📚 My Learning</a>
+      <a href="exam.html">📝 Exam</a>
+      <a href="fees.html">💰 Fees</a>
+      <a>🚪 Logout</a>
+    </div>
+
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <h3>MY COURSE: MASTER OF BUSINESS ADMINISTRATION (MBA)</h3>
+
+    <!-- SUBJECT CARDS -->
+    <div class="cards" id="cards"></div>
+
+    <!-- GRAPH -->
+    <div class="graph">
+      <h3>Course Engagement</h3>
+      <canvas id="chart"></canvas>
+    </div>
+
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+const user = JSON.parse(localStorage.getItem("user"));
+
+fetch(`http://localhost:3000/dashboard/${user.username}`)
+.then(res => res.json())
+.then(data => {
+
+if(data.success){
+
+data.subjects.forEach((sub, index) => {
+
+document.getElementById("name").innerText = data.name;
+
+const container = document.getElementById("cards");
+
+let labels = [];
+let values = [];
+
+sub.progress = Math.floor(Math.random() * 11); // 0–10%
+
+labels.push("S"+(index+1));
+values.push(sub.progress);
+
+container.innerHTML += `
+<div class="card">
+  <h4>${sub.name}</h4>
+  <small>Subj. Code: 210DM${index+1}</small>
+  <div class="percent">${sub.progress}%</div>
+</div>
+`;
+
+});
+
+// GRAPH (CU STYLE)
+new Chart(document.getElementById("chart"), {
+  type: "line",
+  data: {
+    labels: ["Week1","Week2","Week3","Week4"],
+    datasets: [
+      {
+        label: "Logins",
+        data: [0,0,0,20,80,100],
+        borderColor: "blue",
+        fill: false
+      },
+      {
+        label: "Content Viewed",
+        data: [0,0,0,30,120,220],
+        borderColor: "green",
+        fill: true
+      }
+    ]
+  }
+});
+
+}
+
+});
+</script>
+
+</body>
+</html>
