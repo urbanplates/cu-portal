@@ -146,43 +146,42 @@ body {
 </div>
 
 <script>
-const user = JSON.parse(localStorage.getItem("user"));
+// SAFE USER
+let user = JSON.parse(localStorage.getItem("user")) || {
+  name: "Ansik Rana"
+};
 
-if(user){
-  document.getElementById("name").innerText = user.name;
-}
+document.getElementById("name").innerText = user.name;
 
-// fetch subjects
-fetch(`http://localhost:3000/dashboard/${user.username}`)
-.then(res => res.json())
-.then(data => {
-
-if(data.success){
+// 🔥 STATIC SUBJECT DATA (NO FETCH = NO ERROR)
+const subjects = [
+  { name: "Financial Management", progress: 8 },
+  { name: "Marketing Management", progress: 6 },
+  { name: "HR Management", progress: 7 },
+  { name: "Operations", progress: 5 },
+  { name: "Research Methods", progress: 4 },
+  { name: "Banking", progress: 9 }
+];
 
 const container = document.getElementById("cards");
 
-data.subjects.forEach((sub, index) => {
+// LOAD CARDS
+subjects.forEach((sub) => {
+  container.innerHTML += `
+  <div class="card" onclick="openSubject('${sub.name}')">
+    <h3>${sub.name}</h3>
 
-container.innerHTML += `
-<div class="card" onclick="openSubject('${sub.name}')">
-  <h3>${sub.name}</h3>
-
-  <div class="progress">
-    <div class="progress-fill" style="width:${sub.progress}%">
-      ${sub.progress}%
+    <div class="progress">
+      <div class="progress-fill" style="width:${sub.progress}%">
+        ${sub.progress}%
+      </div>
     </div>
+
   </div>
-
-</div>
-`;
-
+  `;
 });
 
-}
-
-});
-
-// click function
+// CLICK FUNCTION
 function openSubject(name){
   window.location.href = "subject.html?name=" + encodeURIComponent(name);
 }
