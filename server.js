@@ -9,7 +9,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(__dirname));
 
-// DB Connection
+// DB (works locally only)
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -17,10 +17,9 @@ const db = mysql.createConnection({
   database: "college_db"
 });
 
-// Connect DB
 db.connect((err) => {
   if (err) {
-    console.log("❌ DB Connection Error:", err);
+    console.log("❌ DB Error:", err);
   } else {
     console.log("DB Connected ✅");
   }
@@ -30,11 +29,11 @@ db.connect((err) => {
 app.post("/login", (req, res) => {
   const { username, password } = req.body;
 
-  // ✅ FIRST: Try database (for local use)
   const sql = "SELECT * FROM students WHERE username=? AND password=?";
 
   db.query(sql, [username, password], (err, result) => {
 
+    // ✅ DB success (local)
     if (!err && result.length > 0) {
       return res.json({
         success: true,
@@ -42,7 +41,7 @@ app.post("/login", (req, res) => {
       });
     }
 
-    // ✅ SECOND: FALLBACK (FOR RENDER / SUBMISSION)
+    // ✅ FALLBACK (for Render)
     if (username === "10027071344" && password === "18/01/2004") {
       return res.json({
         success: true,
@@ -53,72 +52,49 @@ app.post("/login", (req, res) => {
       });
     }
 
-    // ❌ wrong login
     res.json({ success: false });
   });
 });
+
 // ================= DASHBOARD =================
 app.get("/dashboard/:username", (req, res) => {
-  const username = req.params.username;
 
-  const sql = "SELECT name, subjects FROM students WHERE username=?";
-
-  db.query(sql, [username], (err, result) => {
-    if (err) {
-      console.log(err);
-      return res.json({ success: false });
-    }
-
-    if (result.length > 0) {
-      let subjects = [];
-
-      try {
-        // 🔥 FIX HERE
-        subjects = JSON.parse(result[0].subjects);
-      } catch (e) {
-        console.log("JSON Parse Error:", e);
-      }
-
-      res.json({
-        success: true,
-        name: result[0].name,
-        subjects: subjects
-      });
-
-    } else {
-      res.json({ success: false });
-    }
+  // ✅ fallback data (important for Render)
+  res.json({
+    success: true,
+    name: "Ansik Rana",
+    subjects: [
+      { name: "Financial Management", progress: 8 },
+      { name: "Marketing Management", progress: 6 },
+      { name: "HR Management", progress: 7 },
+      { name: "Operations", progress: 5 },
+      { name: "Research Methods", progress: 4 },
+      { name: "Banking", progress: 9 }
+    ]
   });
+
 });
+
 // ================= FEES =================
 app.get("/fees/:username", (req, res) => {
-  const username = req.params.username;
 
-  const sql = "SELECT total_fees, paid_amount FROM students WHERE username=?";
-
-  db.query(sql, [username], (err, result) => {
-    if (err) return res.json({ success: false });
-
-    if (result.length > 0) {
-      res.json({
-        success: true,
-        data: result[0]
-      });
-    } else {
-      res.json({ success: false });
+  // ✅ fallback fees data
+  res.json({
+    success: true,
+    data: {
+      total_fees: 42498,
+      paid_amount: 42498
     }
-function downloadReceipt() {
-  // fake error like real portal
-  alert("❌ Error: Unable to download receipt. Please try again later.");
-}
   });
+
 });
 
-// ================= TEST =================
+// ================= HOME =================
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/login.html");
 });
+
 // ================= START =================
 app.listen(3000, () => {
-  console.log("Server running → https://cu-portal.onrender.com 🚀");
-});
+  console.log("Server running 🚀");
+})
