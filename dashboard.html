@@ -10,6 +10,7 @@ body {
   background: #f4f6f9;
 }
 
+/* TOPBAR */
 .topbar {
   background: #0c3c60;
   color: white;
@@ -18,15 +19,12 @@ body {
   align-items: center;
 }
 
-.topbar img {
-  height: 35px;
-  margin-right: 10px;
-}
-
+/* MAIN */
 .main {
   display: flex;
 }
 
+/* SIDEBAR */
 .sidebar {
   width: 230px;
   background: #123d5c;
@@ -37,11 +35,10 @@ body {
 
 .profile {
   text-align: center;
-  margin-bottom: 20px;
 }
 
 .profile img {
-  width: 80px;
+  width: 70px;
   border-radius: 50%;
 }
 
@@ -59,14 +56,16 @@ body {
   background: #1e5c85;
 }
 
+/* CONTENT */
 .content {
   flex: 1;
   padding: 20px;
 }
 
+/* CARDS */
 .cards {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 15px;
 }
 
@@ -85,29 +84,131 @@ body {
   background: #ff9800;
   padding: 5px 10px;
   border-radius: 5px 0 8px 0;
-  font-weight: bold;
 }
 
+/* GRAPH */
 .graph {
   background: white;
   margin-top: 20px;
   padding: 20px;
   border-radius: 10px;
 }
+
+/* MOBILE FIX */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 70px;
+  }
+
+  .sidebar h4 {
+    display: none;
+  }
+}
 </style>
 </head>
 
 <body>
 
+<!-- TOPBAR -->
 <div class="topbar">
-  <img src="images/logo.png">
   <h3>Chandigarh University</h3>
 </div>
 
 <div class="main">
 
+<!-- SIDEBAR -->
 <div class="sidebar">
+
   <div class="profile">
     <img src="images/user.png">
     <h4 id="name">Student</h4>
   </div>
+
+  <div class="menu">
+    <a class="active">📊 Dashboard</a>
+    <a href="mylearning.html">📚 My Learning</a>
+    <a href="exam.html">📝 Exam</a>
+    <a href="fees.html">💰 Fees</a>
+    <a href="login.html">🚪 Logout</a>
+  </div>
+
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+<h3>MY COURSE: MBA</h3>
+
+<div class="cards" id="cards"></div>
+
+<div class="graph">
+  <h3>Course Engagement</h3>
+  <canvas id="chart"></canvas>
+</div>
+
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+// SAFE USER
+let user = JSON.parse(localStorage.getItem("user")) || {
+  name: "Ansik Rana"
+};
+
+document.getElementById("name").innerText = user.name;
+
+// STATIC SUBJECTS
+const subjects = [
+  { name: "Finance", progress: 8 },
+  { name: "Marketing", progress: 6 },
+  { name: "HR", progress: 7 },
+  { name: "Operations", progress: 5 },
+  { name: "Research", progress: 4 },
+  { name: "Banking", progress: 9 }
+];
+
+const container = document.getElementById("cards");
+
+let labels = [];
+let values = [];
+
+subjects.forEach((sub) => {
+  labels.push(sub.name);
+  values.push(sub.progress);
+
+  container.innerHTML += `
+  <div class="card">
+    <h4>${sub.name}</h4>
+    <div class="percent">${sub.progress}%</div>
+  </div>
+  `;
+});
+
+// GRAPH (LIKE CU STYLE)
+new Chart(document.getElementById("chart"), {
+  type: "line",
+  data: {
+    labels: ["July","Aug","Sep","Oct","Nov","Dec"],
+    datasets: [
+      {
+        label: "Logins",
+        data: [0,0,5,10,30,80],
+        borderColor: "blue",
+        fill: false
+      },
+      {
+        label: "Content Viewed",
+        data: [0,0,10,20,60,200],
+        borderColor: "green",
+        fill: true
+      }
+    ]
+  }
+});
+</script>
+
+</body>
+</html>

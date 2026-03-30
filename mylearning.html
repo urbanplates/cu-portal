@@ -71,7 +71,7 @@ body {
 /* CARDS */
 .cards {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 20px;
 }
 
@@ -81,12 +81,14 @@ body {
   border-radius: 10px;
   cursor: pointer;
   transition: 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .card:hover {
   transform: scale(1.05);
 }
 
+/* PROGRESS BAR */
 .progress {
   background: #ddd;
   height: 18px;
@@ -102,6 +104,25 @@ body {
   text-align: center;
   line-height: 18px;
   border-radius: 10px;
+}
+
+/* MOBILE FIX */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 70px;
+  }
+
+  .sidebar h4 {
+    display: none;
+  }
+
+  .menu a {
+    font-size: 12px;
+  }
+
+  .content {
+    padding: 10px;
+  }
 }
 </style>
 </head>
@@ -153,14 +174,14 @@ let user = JSON.parse(localStorage.getItem("user")) || {
 
 document.getElementById("name").innerText = user.name;
 
-// 🔥 STATIC SUBJECT DATA (NO FETCH = NO ERROR)
+// SUBJECT DATA (STATIC = NO ERROR)
 const subjects = [
   { name: "Financial Management", progress: 8 },
   { name: "Marketing Management", progress: 6 },
   { name: "HR Management", progress: 7 },
-  { name: "Operations", progress: 5 },
+  { name: "Operations Management", progress: 5 },
   { name: "Research Methods", progress: 4 },
-  { name: "Banking", progress: 9 }
+  { name: "Banking & Finance", progress: 9 }
 ];
 
 const container = document.getElementById("cards");
