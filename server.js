@@ -43,7 +43,7 @@ app.post("/login", (req, res) => {
     }
 
     // ✅ SECOND: FALLBACK (FOR RENDER / SUBMISSION)
-    if (username === "10027071344" && password === "123456") {
+    if (username === "10027071344" && password === "18/01/2004") {
       return res.json({
         success: true,
         user: {
