@@ -78,151 +78,6 @@ body {
   position: relative;
 }
 
-.card small {
-  opacity: 0.8;
-}
-
-.percent {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  background: #ff9800;
-  padding: 5px 10px;
-  border-radius: 5px 0 8px 0;
-  font-weight: bold;
-}
-
-.graph {
-  background: white;
-  margin-top: 20px;
-  padding: 20px;
-  border-radius: 10px;
-}
-</style>
-</head>
-
-<body>
-
-<div class="topbar">
-  <img src="images/logo.png">
-  <h3>Chandigarh University</h3>
-</div>
-
-<div class="main">
-
-<div class="sidebar">
-  <div class="profile">
-    <img src="images/user.png">
-    <h4 id="name">Student</h4>
-  </div>
-
-  <div class="menu">
-    <a class="active">📊 Dashboard</a>
-    <a href="mylearning.html">📚 My Learning</a>
-    <a href="exam.html">📝 Exam</a>
-    <a href="fees.html">💰 Fees</a>
-    <a href="login.html">🚪 Logout</a>
-  </div>
-</div>
-
-<div class="content">
-
-<h3>MY COURSE: MASTER OF BUSINESS ADMINISTRATION (MBA)</h3>
-
-<div class="cards" id="cards"></div>
-
-<div class="graph">
-  <h3>Course Engagement</h3>
-  <canvas id="chart"></canvas>
-</div>
-
-</div>
-</div>
-
-<!DOCTYPE html>
-<html>
-<head>
-<title>Dashboard</title>
-
-<style>
-body {
-  margin: 0;
-  font-family: Arial;
-  background: #f4f6f9;
-}
-
-.topbar {
-  background: #0c3c60;
-  color: white;
-  padding: 12px 20px;
-  display: flex;
-  align-items: center;
-}
-
-.topbar img {
-  height: 35px;
-  margin-right: 10px;
-}
-
-.main {
-  display: flex;
-}
-
-.sidebar {
-  width: 230px;
-  background: #123d5c;
-  color: white;
-  height: 100vh;
-  padding: 20px;
-}
-
-.profile {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.profile img {
-  width: 80px;
-  border-radius: 50%;
-}
-
-.menu a {
-  display: block;
-  padding: 10px;
-  margin: 5px 0;
-  color: white;
-  text-decoration: none;
-  border-radius: 5px;
-}
-
-.menu a:hover,
-.active {
-  background: #1e5c85;
-}
-
-.content {
-  flex: 1;
-  padding: 20px;
-}
-
-.cards {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 15px;
-}
-
-.card {
-  background: #0c3c60;
-  color: white;
-  padding: 15px;
-  border-radius: 8px;
-  position: relative;
-}
-
-.card small {
-  opacity: 0.8;
-}
-
 .percent {
   position: absolute;
   right: 0;
@@ -283,45 +138,38 @@ body {
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-const user = JSON.parse(localStorage.getItem("user"));
+// safe user
+let user = JSON.parse(localStorage.getItem("user")) || { name: "Ansik Rana" };
 
-// 🔒 if not logged in
-if(!user){
-  window.location.href = "login.html";
-}
+document.getElementById("name").innerText = user.name;
 
-// fetch data
-fetch(https://cu-portal.onrender.com/dashboard/${user.username})
-.then(res => res.json())
-.then(data => {
-
-if(data.success){
-
-document.getElementById("name").innerText = data.name;
+// ✅ NO FETCH (NO ERROR)
+const subjects = [
+  { name: "Financial Management", progress: 8 },
+  { name: "Marketing Management", progress: 6 },
+  { name: "HR Management", progress: 7 },
+  { name: "Operations", progress: 5 },
+  { name: "Research Methods", progress: 4 },
+  { name: "Banking", progress: 9 }
+];
 
 const container = document.getElementById("cards");
 
 let labels = [];
 let values = [];
 
-data.subjects.forEach((sub, index) => {
-
-  // random under 11%
-  sub.progress = Math.floor(Math.random() * 11);
-
+subjects.forEach((sub, index) => {
   labels.push(sub.name);
   values.push(sub.progress);
 
   container.innerHTML += `
   <div class="card">
     <h4>${sub.name}</h4>
-    <small>Subj. Code: 210DM${index+1}</small>
     <div class="percent">${sub.progress}%</div>
   </div>
   `;
 });
 
-// ✅ GRAPH FIXED
 new Chart(document.getElementById("chart"), {
   type: "bar",
   data: {
@@ -332,14 +180,7 @@ new Chart(document.getElementById("chart"), {
     }]
   }
 });
-
-}
-
-});
 </script>
 
 </body>
-</html
-
-</body>
-</html
+</html>
