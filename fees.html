@@ -187,9 +187,9 @@ fetch("/fees/" + user.username)
     let btn = "";
 
     if(i.status === "Paid"){
-      btn = <button class="btn download">Download</button>;
+      btn = `<button class="btn download">Download</button>`;
     } else {
-      btn = <button class="btn pay" onclick="payNow(${i.no}, ${i.amount})">Pay Now</button>;
+      btn = `<button class="btn pay" onclick="payNow(${i.no}, ${i.amount})">Pay Now</button>`;
     }
 
     table.innerHTML += `
