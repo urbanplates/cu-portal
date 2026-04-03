@@ -1,68 +1,34 @@
 const express = require("express");
-const mysql = require("mysql");
 const cors = require("cors");
+const path = require("path");
 
 const app = express();
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.static(__dirname));
 
-// DB (works locally only)
-const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "83A4537",
-  database: "college_db"
-});
-
-db.connect((err) => {
-  if (err) {
-    console.log("❌ DB Error:", err);
-  } else {
-    console.log("DB Connected ✅");
-  }
-});
-
-// ================= LOGIN =================
+/* ================= LOGIN ================= */
 app.post("/login", (req, res) => {
   const { username, password } = req.body;
 
-  const sql = "SELECT * FROM students WHERE username=? AND password=?";
+  if (username === "10027071344" && password === "18/01/2004") {
+    return res.json({
+      success: true,
+      user: {
+        username: "10027071344",
+        name: "Ansik Rana"
+      }
+    });
+  }
 
-  db.query(sql, [username, password], (err, result) => {
-
-    // ✅ DB success (local)
-    if (!err && result.length > 0) {
-      return res.json({
-        success: true,
-        user: result[0]
-      });
-    }
-
-    // ✅ FALLBACK (for Render)
-    if (username === "10027071344" && password === "18/01/2004") {
-      return res.json({
-        success: true,
-        user: {
-          username: "10027071344",
-          name: "Ansik Rana"
-        }
-      });
-    }
-
-    res.json({ success: false });
-  });
+  res.json({ success: false });
 });
 
-// ================= DASHBOARD =================
+/* ================= DASHBOARD ================= */
 app.get("/dashboard/:username", (req, res) => {
-
-  // ✅ fallback data (important for Render)
   res.json({
     success: true,
-    name: "Ansik Rana",
     subjects: [
       { name: "Financial Management", progress: 8 },
       { name: "Marketing Management", progress: 6 },
@@ -72,29 +38,67 @@ app.get("/dashboard/:username", (req, res) => {
       { name: "Banking", progress: 9 }
     ]
   });
-
 });
 
-// ================= FEES =================
+/* ================= FEES ================= */
+let installments = [
+  { no: 1, amount: 5833, status: "Paid" },
+  { no: 2, amount: 5833, status: "Paid" },
+  { no: 3, amount: 5833, status: "Paid" },
+  { no: 4, amount: 5833, status: "Paid" },
+  { no: 5, amount: 5833, status: "Paid" },
+  { no: 6, amount: 5833, status: "Paid" },
+  { no: 7, amount: 7500, status: "Paid" },
+  { no: 8, amount: 7600, status: "Unpaid" }
+];
+
 app.get("/fees/:username", (req, res) => {
 
-  // ✅ fallback fees data
-  res.json({
-    success: true,
-    data: {
-      total_fees: 42498,
-      paid_amount: 42498
-    }
+  let paid_amount = 0;
+
+  installments.forEach(i => {
+    if (i.status === "Paid") paid_amount += i.amount;
   });
 
+  let total_fees = installments.reduce((sum, i) => sum + i.amount, 0);
+
+  res.json({
+    success: true,
+    total_fees,
+    paid_amount,
+    installments
+  });
 });
 
-// ================= HOME =================
+/* ================= PAYMENT ================= */
+app.post("/pay", (req, res) => {
+  const { installment_no } = req.body;
+
+  if (!installment_no) {
+    return res.json({ success: false });
+  }
+
+  installments = installments.map(i => {
+    if (i.no === installment_no) {
+      i.status = "Paid";
+    }
+    return i;
+  });
+
+  res.json({
+    success: true,
+    message: Installment ${installment_no} paid successfully
+  });
+});
+
+/* ================= HOME ================= */
 app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/login.html");
+  res.sendFile(path.join(__dirname, "login.html"));
 });
 
-// ================= START =================
-app.listen(3000, () => {
-  console.log("Server running 🚀");
-})
+/* ================= START ================= */
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log("Server running on port " + PORT);
+});

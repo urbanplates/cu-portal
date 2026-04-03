@@ -4,255 +4,222 @@
 <title>Fees</title>
 
 <style>
-body {
-  margin: 0;
-  font-family: Arial;
-  background: #f4f6f9;
-}
+body { margin:0; font-family:Arial; background:#f4f6f9; }
 
-/* TOPBAR */
 .topbar {
-  background: #0c3c60;
-  color: white;
-  padding: 12px 20px;
-  display: flex;
-  align-items: center;
+  background:#0c3c60;
+  color:white;
+  padding:12px 20px;
 }
 
-.topbar img {
-  height: 35px;
-  margin-right: 10px;
-}
+.main { display:flex; }
 
-/* MAIN */
-.main {
-  display: flex;
-}
-
-/* SIDEBAR */
 .sidebar {
-  width: 230px;
-  background: #123d5c;
-  color: white;
-  height: 100vh;
-  padding: 20px;
+  width:230px;
+  background:#123d5c;
+  color:white;
+  height:100vh;
+  padding:20px;
 }
 
-.profile {
-  text-align: center;
-  margin-bottom: 20px;
+.sidebar a {
+  display:block;
+  padding:10px;
+  color:white;
+  text-decoration:none;
 }
 
-.profile img {
-  width: 80px;
-  border-radius: 50%;
+.sidebar a.active {
+  background:#1e5c85;
+  border-radius:5px;
 }
 
-.menu a {
-  display: block;
-  padding: 10px;
-  margin: 5px 0;
-  color: white;
-  text-decoration: none;
-  border-radius: 5px;
-}
+.content { flex:1; padding:20px; }
 
-.menu a:hover,
-.active {
-  background: #1e5c85;
-}
-
-/* CONTENT */
-.content {
-  flex: 1;
-  padding: 20px;
-}
-
-/* CARD */
 .card {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  margin-bottom: 20px;
+  background:white;
+  padding:20px;
+  border-radius:10px;
+  margin-bottom:20px;
 }
 
-/* PROGRESS BAR */
 .progress {
-  background: #ddd;
-  height: 12px;
-  border-radius: 6px;
-  margin-top: 10px;
+  background:#ddd;
+  height:12px;
+  border-radius:6px;
 }
 
 .progress-bar {
-  height: 12px;
-  background: green;
-  width: 0%;
-  border-radius: 6px;
+  height:12px;
+  background:green;
+  border-radius:6px;
+  width:0%;
 }
 
-/* TABLE */
 table {
-  width: 100%;
-  border-collapse: collapse;
+  width:100%;
+  border-collapse:collapse;
 }
 
 th {
-  background: #0c3c60;
-  color: white;
-  padding: 10px;
+  background:#0c3c60;
+  color:white;
+  padding:10px;
 }
 
 td {
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
-  text-align: center;
+  padding:10px;
+  border-bottom:1px solid #ddd;
+  text-align:center;
 }
 
-/* BUTTON */
-.download-btn {
-  margin-top: 5px;
-  padding: 5px 8px;
-  font-size: 12px;
-  background: #0c3c60;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+.btn {
+  padding:6px 12px;
+  border:none;
+  border-radius:5px;
+  color:white;
+  cursor:pointer;
 }
 
-.download-btn:hover {
-  background: #1e5c85;
-}
+.pay { background:green; }
+.download { background:#0c3c60; }
 </style>
 </head>
 
 <body>
 
 <div class="topbar">
-  <img src="images/logo.png">
   <h3>Chandigarh University</h3>
 </div>
 
 <div class="main">
 
-  <div class="sidebar">
-    <div class="profile">
-      <img src="images/user.png">
-      <h4 id="name">Student</h4>
-    </div>
-
-    <div class="menu">
-      <a href="dashboard.html">📊 Dashboard</a>
-      <a class="active">💰 Fees</a>
-      <a href="login.html">🚪 Logout</a>
-    </div>
+<div class="sidebar">
+  <div style="text-align:center;">
+    <img src="images/user.png" style="width:80px; border-radius:50%;">
+    <h4 id="name">Student</h4>
   </div>
 
-  <div class="content">
+  <a href="dashboard.html">📊 Dashboard</a>
+  <a class="active">💰 Fees</a>
+  <a href="#" onclick="logout()">🚪 Logout</a>
+</div>
 
-    <!-- SUMMARY -->
-    <div class="card">
-      <h3>Fees Summary</h3>
-      <p>Paid: ₹<span id="paid"></span></p>
-      <p>Pending: ₹<span id="pending"></span></p>
+<div class="content">
 
-      <div class="progress">
-        <div id="bar" class="progress-bar"></div>
-      </div>
+<div class="card">
+  <h3>Fees Summary</h3>
+  <p>Paid: ₹<span id="paid">0</span></p>
+  <p>Pending: ₹<span id="pending">0</span></p>
 
-      <h4 style="color:green;">✔ All Fees Cleared</h4>
-    </div>
-
-    <!-- TABLE -->
-    <div class="card">
-      <h3>Installments</h3>
-
-      <table>
-        <thead>
-          <tr>
-            <th>No</th>
-            <th>Amount</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody id="table"></tbody>
-      </table>
-    </div>
-
+  <div class="progress">
+    <div id="bar" class="progress-bar"></div>
   </div>
+
+  <h4 id="status"></h4>
+</div>
+
+<div class="card">
+  <h3>Installments</h3>
+
+  <table>
+    <thead>
+      <tr>
+        <th>No</th>
+        <th>Amount</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody id="table"></tbody>
+  </table>
+</div>
+
+</div>
 </div>
 
 <script>
-const user = JSON.parse(localStorage.getItem("user"));
 
-if(user){
-  document.getElementById("name").innerText = user.name;
+// ✅ SAFE LOGIN CHECK
+const user = JSON.parse(localStorage.getItem("user") || "null");
+
+if(!user){
+  window.location.href = "login.html";
 }
 
-const installments = [
-  { no: 1, amount: 5833, status: "Paid" },
-  { no: 2, amount: 5833, status: "Paid" },
-  { no: 3, amount: 5833, status: "Paid" },
-  { no: 4, amount: 5833, status: "Paid" },
-  { no: 5, amount: 5833, status: "Paid" },
-  { no: 6, amount: 5833, status: "Paid" },
-  { no: 7, amount: 7500, status: "Paid" }
-];
+document.getElementById("name").innerText = user.name;
 
-let totalPaid = 0;
-installments.forEach(i => totalPaid += i.amount);
+// ✅ FETCH FEES DATA
+fetch("/fees/" + user.username)
+.then(res => res.json())
+.then(data => {
 
-let totalFees = 42498;
-let pending = totalFees - totalPaid;
+  if(!data.success){
+    alert("Failed to load fees data");
+    return;
+  }
 
-document.getElementById("paid").innerText = totalPaid;
-document.getElementById("pending").innerText = pending;
+  let pending = data.total_fees - data.paid_amount;
 
-let percent = (totalPaid / totalFees) * 100;
-document.getElementById("bar").style.width = percent + "%";
+  document.getElementById("paid").innerText = data.paid_amount;
+  document.getElementById("pending").innerText = pending;
 
-const table = document.getElementById("table");
+  // ✅ PROGRESS BAR FIX
+  let percent = (data.paid_amount / data.total_fees) * 100;
+  if(percent > 100) percent = 100;
 
-installments.forEach(i => {
-  table.innerHTML += `
-  <tr>
-    <td>${i.no}</td>
-    <td>₹${i.amount}</td>
-    <td style="color:green;font-weight:bold;">
-      ${i.status}
-      <br>
-      <button class="download-btn" onclick="downloadReceipt(${i.no})">
-        Download
-      </button>
-    </td>
-  </tr>
-  `;
+  document.getElementById("bar").style.width = percent + "%";
+
+  const status = document.getElementById("status");
+
+  if(pending === 0){
+    status.innerText = "✔ All Fees Cleared";
+    status.style.color = "green";
+  } else {
+    status.innerText = "⚠ Pending Fees";
+    status.style.color = "red";
+  }
+
+  const table = document.getElementById("table");
+  table.innerHTML = "";
+
+  data.installments.forEach(i => {
+
+    let btn = "";
+
+    if(i.status === "Paid"){
+      btn = <button class="btn download">Download</button>;
+    } else {
+      btn = <button class="btn pay" onclick="payNow(${i.no}, ${i.amount})">Pay Now</button>;
+    }
+
+    table.innerHTML += `
+      <tr>
+        <td>${i.no}</td>
+        <td>₹${i.amount}</td>
+        <td style="color:${i.status === "Paid" ? "green" : "red"}">
+          ${i.status}<br>${btn}
+        </td>
+      </tr>
+    `;
+  });
+
+})
+.catch(err => {
+  console.log(err);
+  alert("Server error. Please try again later.");
 });
 
-function downloadReceipt(no) {
-
-  // simulate loading delay
-  const msg = document.createElement("div");
-  msg.innerText = "Processing request...";
-  msg.style.position = "fixed";
-  msg.style.top = "20px";
-  msg.style.right = "20px";
-  msg.style.background = "#0c3c60";
-  msg.style.color = "white";
-  msg.style.padding = "10px 15px";
-  msg.style.borderRadius = "5px";
-  msg.style.zIndex = "9999";
-
-  document.body.appendChild(msg);
-
-  setTimeout(() => {
-    msg.remove();
-
-    alert("❌ Server Error: Unable to download receipt. Please try again later.");
-
-  }, 1500);
+// ✅ REDIRECT TO PAYMENT
+function payNow(no, amount){
+  window.location.href = payment.html?amount=${amount}&installment=${no};
 }
+
+// ✅ LOGOUT
+function logout(){
+  localStorage.removeItem("user");
+  window.location.href = "login.html";
+}
+
 </script>
 
 </body>

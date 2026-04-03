@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Transaction Failed</title>
+
+<style>
+body {
+  margin:0;
+  font-family:Arial;
+  background:#f4f6fb;
+}
+
+/* TOP BAR */
+.topbar {
+  background:#1c2331;
+  color:white;
+  text-align:center;
+  padding:12px;
+}
+
+/* CARD */
+.card {
+  width:420px;
+  margin:80px auto;
+  background:white;
+  padding:25px;
+  border-radius:10px;
+  text-align:center;
+  box-shadow:0 10px 30px rgba(0,0,0,0.15);
+}
+
+/* ICON */
+.icon {
+  font-size:40px;
+  color:#e74c3c;
+}
+
+/* BUTTON */
+button {
+  margin-top:15px;
+  padding:10px 20px;
+  background:#2c3e50;
+  color:white;
+  border:none;
+  border-radius:5px;
+  cursor:pointer;
+}
+
+button:hover {
+  background:#34495e;
+}
+</style>
+</head>
+
+<body>
+
+<div class="topbar">Chandigarh University Payments</div>
+
+<div class="card">
+
+  <div class="icon">❌</div>
+
+  <h2 style="color:#e74c3c;">Transaction Failed</h2>
+
+  <p>Your transaction could not be processed due to a bank server timeout.</p>
+
+  <p><b>Amount:</b> ₹7600</p>
+  <p><b>Status:</b> Failed</p>
+  <p><b>Reason:</b> Bank Server Timeout</p>
+  <p><b>Date:</b> <span id="time"></span></p>
+  <p><b>Transaction ID:</b> TXN<span id="txn"></span></p>
+
+  <button onclick="retry()">Try Again</button>
+
+</div>
+
+<script>
+// REAL TIME
+document.getElementById("time").innerText =
+  new Date().toLocaleString();
+
+// RANDOM TXN ID
+document.getElementById("txn").innerText =
+  Math.floor(Math.random()*1000000000);
+
+// RETRY
+function retry(){
+  window.location.href = "bank.html";
+}
+</script>
+
+</body>
+</html>

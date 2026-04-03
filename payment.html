@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>CU Payment</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:#f2f4f7;
+}
+
+/* TOP BAR */
+.header{
+  background:#2c2f3a;
+  color:white;
+  padding:12px;
+  text-align:center;
+  font-size:18px;
+}
+
+/* CENTER BOX */
+.container{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:90vh;
+}
+
+.card{
+  width:500px;
+  background:white;
+  border-radius:6px;
+  box-shadow:0 5px 20px rgba(0,0,0,0.2);
+  overflow:hidden;
+}
+
+/* LOGO */
+.logo{
+  text-align:center;
+  padding:20px;
+}
+
+/* AMOUNT BAR */
+.amount{
+  background:#d71920;
+  color:white;
+  padding:12px;
+  font-weight:bold;
+}
+
+/* CONTENT */
+.content{
+  padding:20px;
+}
+
+.title{
+  text-align:center;
+  font-size:18px;
+  margin-bottom:15px;
+}
+
+/* OPTION */
+.option{
+  border:1px solid #ccc;
+  padding:10px;
+  border-radius:5px;
+  margin-bottom:15px;
+}
+
+/* BUTTON */
+.btn{
+  display:block;
+  margin:20px auto;
+  background:#222;
+  color:white;
+  padding:10px 30px;
+  border:none;
+  cursor:pointer;
+}
+
+/* NOTE */
+.note{
+  color:#d71920;
+  font-size:13px;
+  margin-top:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">Chandigarh University Payments</div>
+
+<div class="container">
+
+<div class="card">
+
+  <!-- LOGO -->
+  <div class="logo">
+    <img src="images/cu-logo.png" width="150">
+  </div>
+
+  <!-- DYNAMIC AMOUNT -->
+  <div class="amount">
+    Amount: ₹<span id="amount">0</span>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <div class="title">Payment Gateway Options</div>
+
+    <div class="option">
+      <input type="radio" checked>
+      <b>HDFC PAYMENT GATEWAY</b> - NET BANKING / DEBIT OR CREDIT CARD  
+      <br><small>(All bank cards acceptable & No Charges Applicable)</small>
+    </div>
+
+    <button class="btn" onclick="goToGateway()">PAY NOW</button>
+
+    <!-- NOTES -->
+    <div class="note">
+      <b>Note - Payment Gateway Fee Charges & Instructions</b><br>
+      • HDFC Gateway: No Charges Applicable on any transaction for all banks.<br>
+      • PAYU Gateway: Charges Applicable.<br>
+      • If response is FAILED and amount got deducted from your bank account,
+      Payment Status will be updated within 2 hrs.
+    </div>
+
+  </div>
+
+</div>
+
+</div>
+
+<script>
+
+// ✅ GET DATA FROM URL
+const params = new URLSearchParams(window.location.search);
+
+const amount = params.get("amount");
+const installment = params.get("installment");
+
+// ✅ VALIDATION
+if(!amount || !installment){
+  alert("Invalid payment request");
+  window.location.href = "fees.html";
+}
+
+// ✅ DISPLAY AMOUNT
+document.getElementById("amount").innerText = amount;
+
+// ✅ STORE DATA FOR NEXT PAGE
+localStorage.setItem("payment_amount", amount);
+localStorage.setItem("installment_no", installment);
+
+// ✅ REDIRECT TO BANK
+function goToGateway(){
+  window.location.href = "bank.html";
+}
+
+</script>
+
+</body>
+</html>
