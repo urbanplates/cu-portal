@@ -211,9 +211,8 @@ fetch("/fees/" + user.username)
 
 // ✅ REDIRECT TO PAYMENT
 function payNow(no, amount){
-  window.location.href = payment.html?amount=${amount}&installment=${no};
+  window.location.href = "payment.html?amount=" + amount + "&installment=" + no;
 }
-
 // ✅ LOGOUT
 function logout(){
   localStorage.removeItem("user");
