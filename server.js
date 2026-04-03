@@ -1,6 +1,5 @@
 const express = require("express");
 const cors = require("cors");
-const path = require("path");
 
 const app = express();
 
@@ -74,10 +73,6 @@ app.get("/fees/:username", (req, res) => {
 app.post("/pay", (req, res) => {
   const { installment_no } = req.body;
 
-  if (!installment_no) {
-    return res.json({ success: false });
-  }
-
   installments = installments.map(i => {
     if (i.no === installment_no) {
       i.status = "Paid";
@@ -87,16 +82,16 @@ app.post("/pay", (req, res) => {
 
   res.json({
     success: true,
-    message: Installment ${installment_no} paid successfully
+    message: "Payment successful"
   });
 });
 
 /* ================= HOME ================= */
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "login.html"));
+  res.sendFile(__dirname + "/login.html");
 });
 
-/* ================= START ================= */
+/* ================= PORT FIX FOR RENDER ================= */
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
