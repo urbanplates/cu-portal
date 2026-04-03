@@ -1,166 +1,141 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>HDFC Payment Gateway</title>
+  <title>HDFC Payment Gateway</title>
 
-<style>
-body {
-  margin:0;
-  font-family: Arial;
-  background:#f4f6fb;
-}
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: #f4f6fb;
+    }
 
-/* TOP BAR */
-.topbar {
-  background:#1c2331;
-  color:white;
-  text-align:center;
-  padding:12px;
-  font-size:16px;
-}
+    .topbar {
+      background: #1c2331;
+      color: white;
+      text-align: center;
+      padding: 12px;
+      font-size: 16px;
+    }
 
-/* LOGO */
-.logo {
-  display:block;
-  margin:10px auto;
-  width:120px;
-}
+    .logo {
+      display: block;
+      margin: 15px auto;
+      width: 120px;
+    }
 
-/* CONTAINER */
-.container {
-  width:720px;
-  margin:50px auto;
-  display:flex;
-  background:white;
-  border-radius:10px;
-  overflow:hidden;
-  box-shadow:0 15px 40px rgba(0,0,0,0.2);
-}
+    .container {
+      width: 720px;
+      margin: 50px auto;
+      display: flex;
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    }
 
-/* LEFT */
-.left {
-  width:45%;
-  background:linear-gradient(135deg,#1a2a6c,#2b5876);
-  color:white;
-  padding:25px;
-}
+    .left {
+      width: 45%;
+      background: linear-gradient(135deg, #1a2a6c, #2b5876);
+      color: white;
+      padding: 25px;
+    }
 
-.left h3 { margin:0; }
-.left p { margin:12px 0; }
+    .right {
+      width: 55%;
+      padding: 25px;
+    }
 
-/* RIGHT */
-.right {
-  width:55%;
-  padding:25px;
-}
+    .session {
+      font-size: 12px;
+      color: gray;
+    }
 
-.session {
-  font-size:12px;
-  color:gray;
-}
+    select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      margin: 15px 0;
+    }
 
-/* DROPDOWN */
-select {
-  width:100%;
-  padding:12px;
-  border-radius:6px;
-  border:1px solid #ccc;
-  margin:15px 0;
-}
-
-/* BUTTON */
-button {
-  width:100%;
-  padding:12px;
-  background:linear-gradient(to right,#0d1b3e,#1f3c88);
-  color:white;
-  border:none;
-  border-radius:6px;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-/* ICON STYLE */
-.option {
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.option img {
-  width:25px;
-}
-</style>
+    button {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(to right, #0d1b3e, #1f3c88);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="topbar">HDFC Payment Gateway</div>
+  <div class="topbar">HDFC Payment Gateway</div>
 
-<img src="images/hdfc.png" class="logo">
+  <img src="images/hdfc.png" class="logo">
 
-<div class="container">
+  <div class="container">
 
-  <!-- LEFT -->
-  <div class="left">
-    <h3>Billing Information</h3>
-    <p><b>Amount:</b> ₹7600.00</p>
-    <p><b>Merchant:</b> CUCHD</p>
-    <p><b>Website:</b> www.cuchd.in</p>
-  </div>
-
-  <!-- RIGHT -->
-  <div class="right">
-    <h3>Select Payment Method</h3>
-
-    <p class="session">
-      Session expires in <span id="timer">15:00</span>
-    </p>
-
-    <select id="method">
-      <option>💳 HDFC Credit Card</option>
-      <option>💳 HDFC Debit Card</option>
-      <option>🏦 Net Banking</option>
-      <option>📱 UPI</option>
-    </select>
-
-    <button onclick="payNow()">PAY NOW</button>
-  </div>
-
-</div>
-
-<script>
-
-/* TIMER (REAL WORKING) */
-let time = 900; // 15 min
-
-setInterval(() => {
-  let min = Math.floor(time / 60);
-  let sec = time % 60;
-
-  document.getElementById("timer").innerText =
-    ${min}:${sec < 10 ? '0'+sec : sec};
-
-  time--;
-}, 1000);
-
-
-/* PAYMENT FLOW */
-function payNow(){
-
-  document.body.innerHTML = `
-    <div style="text-align:center;margin-top:120px;">
-      <h2>Processing Payment...</h2>
-      <p>Please do not refresh</p>
+    <div class="left">
+      <h3>Billing Information</h3>
+      <p><b>Amount:</b> ₹7600.00</p>
+      <p><b>Merchant:</b> CUCHD</p>
+      <p><b>Website:</b> www.cuchd.in</p>
     </div>
-  `;
 
-  setTimeout(() => {
-    window.location.href = "failed.html";
-  }, 2500);
-}
+    <div class="right">
+      <h3>Select Payment Method</h3>
 
-</script>
+      <p class="session">
+        Session expires in <span id="timer">15:00</span>
+      </p>
+
+      <select>
+        <option>HDFC Credit Card</option>
+        <option>HDFC Debit Card</option>
+        <option>Net Banking</option>
+        <option>UPI</option>
+      </select>
+
+      <button onclick="payNow()">PAY NOW</button>
+    </div>
+
+  </div>
+
+  <script>
+    let time = 900;
+
+    const timer = setInterval(function () {
+      let minutes = Math.floor(time / 60);
+      let seconds = time % 60;
+
+      document.getElementById("timer").innerText =
+        minutes + ":" + (seconds < 10 ? "0" + seconds : seconds);
+
+      time--;
+
+      if (time < 0) {
+        clearInterval(timer);
+        alert("Session expired");
+      }
+    }, 1000);
+
+    function payNow() {
+      document.body.innerHTML =
+        '<div style="text-align:center;margin-top:120px;">' +
+        '<h2>Processing Payment...</h2>' +
+        '<p>Please do not refresh</p>' +
+        '</div>';
+
+      setTimeout(function () {
+        window.location.href = "failed.html";
+      }, 2500);
+    }
+  </script>
 
 </body>
 </html>
