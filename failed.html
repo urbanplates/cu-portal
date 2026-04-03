@@ -31,7 +31,7 @@ body {
 
 /* ICON */
 .icon {
-  font-size:40px;
+  font-size:45px;
   color:#e74c3c;
 }
 
@@ -64,29 +64,46 @@ button:hover {
 
   <p>Your transaction could not be processed due to a bank server timeout.</p>
 
-  <p><b>Amount:</b> ₹7600</p>
+  <p><b>Amount:</b> ₹<span id="amount">7600</span></p>
   <p><b>Status:</b> Failed</p>
   <p><b>Reason:</b> Bank Server Timeout</p>
   <p><b>Date:</b> <span id="time"></span></p>
   <p><b>Transaction ID:</b> TXN<span id="txn"></span></p>
 
   <button onclick="retry()">Try Again</button>
+  <br>
+  <button onclick="goBack()">Back to Fees</button>
 
 </div>
 
 <script>
-// REAL TIME
+
+// GET AMOUNT FROM URL (IMPORTANT)
+const params = new URLSearchParams(window.location.search);
+const amount = params.get("amount");
+
+if(amount){
+  document.getElementById("amount").innerText = amount;
+}
+
+// REAL TIME DATE
 document.getElementById("time").innerText =
   new Date().toLocaleString();
 
-// RANDOM TXN ID
+// RANDOM TRANSACTION ID
 document.getElementById("txn").innerText =
-  Math.floor(Math.random()*1000000000);
+  Math.floor(Math.random() * 1000000000);
 
-// RETRY
+// RETRY PAYMENT
 function retry(){
-  window.location.href = "bank.html";
+  window.location.href = "bank.html?amount=" + amount;
 }
+
+// BACK TO FEES
+function goBack(){
+  window.location.href = "fees.html";
+}
+
 </script>
 
 </body>
